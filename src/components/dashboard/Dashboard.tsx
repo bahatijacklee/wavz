@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Home,
   Compass,
@@ -46,11 +47,11 @@ const navItems = [
 ];
 
 const topArtists = [
-  { name: "Luna Lane", xp: "3.2K XP", multiplier: "2.0x", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&q=80", isOnline: true },
-  { name: "The Weekenders", xp: "2.1K XP", multiplier: "1.8x", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&q=80", isOnline: false },
-  { name: "Jaylon", xp: "1.8K XP", multiplier: "1.5x", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&q=80", isOnline: true },
-  { name: "Northline", xp: "1.2K XP", multiplier: "1.2x", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&q=80", isOnline: false },
-  { name: "Aria Mae", xp: "980 XP", multiplier: "1.0x", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&q=80", isOnline: false },
+  { slug: "luna-lane", name: "Luna Lane", xp: "3.2K XP", multiplier: "2.0x", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&q=80", isOnline: true },
+  { slug: "the-weekenders", name: "The Weekenders", xp: "2.1K XP", multiplier: "1.8x", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&q=80", isOnline: false },
+  { slug: "jaylon", name: "Jaylon", xp: "1.8K XP", multiplier: "1.5x", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&q=80", isOnline: true },
+  { slug: "northline", name: "Northline", xp: "1.2K XP", multiplier: "1.2x", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&q=80", isOnline: false },
+  { slug: "aria-mae", name: "Aria Mae", xp: "980 XP", multiplier: "1.0x", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&q=80", isOnline: false },
 ];
 
 const xpChallenges = [
@@ -211,7 +212,81 @@ function XpBadge({ value, delay, x }: { value: string; delay: number; x: number 
   );
 }
 
+const followingArtists = [
+  {
+    slug: "luna-lane",
+    name: "Luna Lane",
+    genre: "Indie Pop · Dream Folk",
+    listeners: "4.8M monthly listeners",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80",
+    cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80",
+    xpMulti: "2.0x",
+    supporters: "128K",
+    isNew: true,
+    latestRelease: "City Lights",
+    tier: "Super Fan",
+    tierColor: "#A855F7",
+  },
+  {
+    slug: "the-weekenders",
+    name: "The Weekenders",
+    genre: "Indie Pop",
+    listeners: "2.1M monthly listeners",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
+    cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
+    xpMulti: "1.8x",
+    supporters: "44K",
+    isNew: false,
+    latestRelease: "Midnight Drive",
+    tier: "Fan",
+    tierColor: "#4F46E5",
+  },
+  {
+    slug: "jaylon",
+    name: "Jaylon",
+    genre: "R&B Soul",
+    listeners: "3.2M monthly listeners",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
+    cover: "https://images.unsplash.com/photo-1501612780327-45045538702b?w=800&q=80",
+    xpMulti: "1.5x",
+    supporters: "91K",
+    isNew: true,
+    latestRelease: "Better Days",
+    tier: "Fan",
+    tierColor: "#4F46E5",
+  },
+  {
+    slug: "northline",
+    name: "Northline",
+    genre: "Shoegaze",
+    listeners: "890K monthly listeners",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80",
+    cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
+    xpMulti: "1.2x",
+    supporters: "18K",
+    isNew: false,
+    latestRelease: "Echoes",
+    tier: null,
+    tierColor: "",
+  },
+  {
+    slug: "aria-mae",
+    name: "Aria Mae",
+    genre: "Dream Pop",
+    listeners: "1.4M monthly listeners",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80",
+    cover: "https://images.unsplash.com/photo-1484876065684-b1cf1b0d50d7?w=800&q=80",
+    xpMulti: "1.0x",
+    supporters: "32K",
+    isNew: false,
+    latestRelease: "Lost in Mind",
+    tier: null,
+    tierColor: "",
+  },
+];
+
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [activeNav, setActiveNav] = useState("Home");
   const [isPlaying, setIsPlaying] = useState(true);
   const [feedTab, setFeedTab] = useState("All");
@@ -376,7 +451,78 @@ export default function Dashboard() {
 
         {/* Scrollable body */}
         <div className="flex-1 overflow-y-auto">
-          <div className="flex gap-5 p-5">
+
+          {/* ── Following Page ─────────────────────────────────────────── */}
+          {activeNav === "Following" && (
+            <div className="p-6">
+              <div className="mb-6">
+                <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: "Satoshi, sans-serif", letterSpacing: "-0.02em" }}>Following</h1>
+                <p className="text-white/40 text-sm">Artists you support — click any to visit their profile</p>
+              </div>
+              <div className="grid grid-cols-1 gap-3">
+                {followingArtists.map((artist) => (
+                  <div
+                    key={artist.slug}
+                    className="relative rounded-2xl overflow-hidden cursor-pointer group transition-all duration-200 hover:-translate-y-0.5"
+                    style={{ background: "#121826", border: "1px solid rgba(255,255,255,0.06)", boxShadow: "0 4px 24px rgba(0,0,0,0.3)" }}
+                    onClick={() => navigate(`/artist/${artist.slug}`)}
+                  >
+                    {/* Cover strip */}
+                    <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
+                      <img src={artist.cover} className="w-full h-full object-cover" alt="" style={{ filter: "blur(2px)" }} />
+                    </div>
+                    <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(18,24,38,0.97) 40%, rgba(18,24,38,0.6) 100%)" }} />
+
+                    {/* Content */}
+                    <div className="relative flex items-center gap-4 px-5 py-4">
+                      <img
+                        src={artist.avatar}
+                        className="w-14 h-14 rounded-xl object-cover flex-shrink-0"
+                        alt={artist.name}
+                        style={{ border: "2px solid rgba(79,70,229,0.3)", boxShadow: "0 4px 16px rgba(0,0,0,0.4)" }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-base font-bold text-white" style={{ fontFamily: "Satoshi, sans-serif" }}>{artist.name}</span>
+                          {artist.isNew && (
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: "rgba(34,197,94,0.12)", color: "#22C55E", border: "1px solid rgba(34,197,94,0.25)" }}>NEW DROP</span>
+                          )}
+                          {artist.tier && (
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: `${artist.tierColor}18`, color: artist.tierColor, border: `1px solid ${artist.tierColor}40` }}>
+                              {artist.tier}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-white/40 mb-1">{artist.genre} · {artist.listeners}</p>
+                        <p className="text-xs text-white/30">Latest: <span className="text-white/60 font-medium">{artist.latestRelease}</span></p>
+                      </div>
+
+                      <div className="flex items-center gap-5 flex-shrink-0">
+                        <div className="text-center hidden sm:block">
+                          <p className="text-[10px] text-white/30 uppercase tracking-wider">Supporters</p>
+                          <p className="text-sm font-bold text-white">{artist.supporters}</p>
+                        </div>
+                        <div className="text-center hidden sm:block">
+                          <p className="text-[10px] text-white/30 uppercase tracking-wider">XP Multi</p>
+                          <p className="text-sm font-bold" style={{ color: "#22C55E" }}>{artist.xpMulti}</p>
+                        </div>
+                        <button
+                          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all duration-200 group-hover:scale-105"
+                          style={{ background: "linear-gradient(135deg,#4F46E5,#7C3AED)", boxShadow: "0 4px 16px rgba(79,70,229,0.35)" }}
+                          onClick={(e) => { e.stopPropagation(); navigate(`/artist/${artist.slug}`); }}
+                        >
+                          View Profile
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeNav !== "Following" && <div className="flex gap-5 p-5">
 
             {/* ── Center Column ──────────────────────────────────────────── */}
             <div className="flex-1 flex flex-col gap-5 min-w-0">
@@ -685,11 +831,11 @@ export default function Dashboard() {
               <div className="rounded-2xl p-4 border" style={{ backgroundColor: "#0E1524", borderColor: "rgba(255,255,255,0.06)" }}>
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="text-white font-bold text-sm" style={{ fontFamily: "Satoshi, sans-serif" }}>Your Artists</h2>
-                  <button className="text-indigo-400 text-xs hover:text-indigo-300 transition-colors">View all</button>
+                  <button className="text-indigo-400 text-xs hover:text-indigo-300 transition-colors" onClick={() => setActiveNav("Following")}>View all</button>
                 </div>
                 <div className="flex flex-col gap-1.5">
                   {topArtists.map((artist) => (
-                    <div key={artist.name} className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/[0.04] transition-all cursor-pointer group border border-transparent hover:border-white/[0.06]">
+                    <div key={artist.name} onClick={() => navigate(`/artist/${artist.slug}`)} className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/[0.04] transition-all cursor-pointer group border border-transparent hover:border-white/[0.06]">
                       <div className="relative flex-shrink-0">
                         <img src={artist.avatar} className="w-8 h-8 rounded-full object-cover border border-white/10" alt={artist.name} />
                         {artist.isOnline && <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-[#0E1524]" />}
@@ -789,6 +935,7 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </main>
