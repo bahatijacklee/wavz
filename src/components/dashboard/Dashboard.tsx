@@ -522,7 +522,8 @@ export default function Dashboard() {
             </div>
           )}
 
-          {activeNav !== "Following" && <div className="flex gap-5 p-5">
+          {activeNav !== "Following" ? (
+            <div className="flex gap-5 p-5">
 
             {/* ── Center Column ──────────────────────────────────────────── */}
             <div className="flex-1 flex flex-col gap-5 min-w-0">
@@ -936,7 +937,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          </div>
+          ) : null}
         </div>
       </main>
     </div>
