@@ -361,7 +361,10 @@ export default function Dashboard() {
             return (
               <button
                 key={label}
-                onClick={() => setActiveNav(label)}
+                onClick={() => {
+                  setActiveNav(label);
+                  if (label === "Rewards") navigate("/rewards");
+                }}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 w-full text-left group ${
                   isActive ? "text-white" : "text-white/45 hover:text-white/80 hover:bg-white/[0.04]"
                 }`}
